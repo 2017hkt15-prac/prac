@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SortAddrPrac</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="starting">시작지</string>
+    <string name="way1">경유지1</string>
+    <string name="destination">목적지</string>
+    <string name="find">검색</string>
 </resources>

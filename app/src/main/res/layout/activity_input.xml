@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="295dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="82dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/startingTxt"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:textSize="@dimen/SubTextViewSize"
+                android:ems="10"
+                android:text="@string/starting" />
+
+            <TextView
+                android:id="@+id/way1Txt"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:textSize="@dimen/SubTextViewSize"
+                android:ems="10"
+                android:text="@string/way1" />
+
+            <TextView
+                android:id="@+id/destinationTxt"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:textSize="@dimen/SubTextViewSize"
+                android:ems="10"
+                android:text="@string/destination" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="166dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/starting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/way1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/destination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="77dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/del1"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                app:srcCompat="@android:drawable/ic_delete" />
+
+            <ImageButton
+                android:id="@+id/del2"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                app:srcCompat="@android:drawable/ic_delete" />
+
+            <ImageButton
+                android:id="@+id/del3"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                app:srcCompat="@android:drawable/ic_delete" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@android:drawable/ic_input_add" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_for_map"
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
+            android:orientation="horizontal"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_accept"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/SubTextViewSize"
+                android:text="@string/find" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
+    </LinearLayout>
+
+</LinearLayout>
