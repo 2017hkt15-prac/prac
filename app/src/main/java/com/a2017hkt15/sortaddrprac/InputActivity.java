@@ -17,7 +17,6 @@ import com.skp.Tmap.TMapView;
  */
 
 public class InputActivity extends AppCompatActivity {
-    private String ApiKey = "1580079a-acc2-307f-b1bb-979bf55fc810";
     private MarkerActivity markerActivity;
     private PathActivity pathActivity;
 
