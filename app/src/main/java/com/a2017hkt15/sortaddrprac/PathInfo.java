@@ -7,34 +7,34 @@ import java.util.ArrayList;
  */
 
 public class PathInfo {
-    private ArrayList<Integer> pathRoute;
-    private int pathLength;
+    private int[] pathRoute;
+    private double pathLength;
 
     public PathInfo()
     {
 
     }
 
-    public PathInfo(ArrayList<Integer> pr,int pl)
+    public PathInfo(int[] pr,double pl)
     {
         pathRoute = pr;
         pathLength =pl;
     }
 
 
-    public ArrayList<Integer> getPathRoute() {
+    public int[] getPathRoute() {
         return pathRoute;
     }
 
-    public void setPathRoute(ArrayList<Integer> pathRoute) {
+    public void setPathRoute(int[] pathRoute) {
         this.pathRoute = pathRoute;
     }
 
-    public int getPathLength() {
+    public double getPathLength() {
         return pathLength;
     }
 
-    public void setPathLength(int pathLength) {
+    public void setPathLength(double pathLength) {
         this.pathLength = pathLength;
     }
 }
