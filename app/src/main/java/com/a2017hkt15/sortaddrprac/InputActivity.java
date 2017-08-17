@@ -6,18 +6,16 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.skp.Tmap.TMapView;
 
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by gwmail on 2017-08-15.
@@ -108,16 +106,8 @@ public class InputActivity extends AppCompatActivity {
         markerController.addMarker(37.136474f,  126.985022f, "test3");
         markerController.addMarker(37.536474f, 126.855022f,  "test4");
 
-        try {
-            pathBasic.calcDistancePath(markerController.getMarkerList());
+        pathBasic.calcDistancePath(markerController.getMarkerList());
 
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 

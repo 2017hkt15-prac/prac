@@ -39,7 +39,7 @@ public class PathBasic {
     }
 
     // 리스트에 있는 마커끼리의 거리를 계산해 거리 배열에 저장
-    public void calcDistancePath(ArrayList<TMapMarkerItem> markerList) throws ParserConfigurationException, SAXException, IOException {
+    public void calcDistancePath(ArrayList<TMapMarkerItem> markerList) {
         for (start = 0; start < markerList.size(); start++)
             for (end = 0; end < markerList.size(); end++) {
                 if (start == end)
