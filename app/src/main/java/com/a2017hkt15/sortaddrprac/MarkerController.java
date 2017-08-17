@@ -16,9 +16,14 @@ import java.util.ArrayList;
 public class MarkerController {
     // 최초 시작시 스타트 마커 여부
     private boolean isStartExist;
+    private boolean isEndExist;
+    private int endIndex;
 
     // 현재 체크된 마커 리스트들
     private ArrayList<TMapMarkerItem> markerList;
+
+    // 찾은 경로의 마커 리스트들
+    private ArrayList<TMapMarkerItem> pathMarkerList;
 
     // 마커 중심점 위치 (하단, 중앙)
     private float markerCenterDx = 0.5f;
@@ -33,6 +38,7 @@ public class MarkerController {
     public MarkerController (TMapView tmapView, Bitmap startMarkerIcon, Bitmap passMarkerIcon, Bitmap endMarkerIcon) {
         this.tmapView = tmapView;
         this.isStartExist = false;
+        this.isEndExist = false;
         this.startMarkerIcon = startMarkerIcon;
         this.passMarkerIcon = passMarkerIcon;
         this.endMarkerIcon = endMarkerIcon;
@@ -87,6 +93,19 @@ public class MarkerController {
         isStartExist = true;
     }
 
+    public void setEndMarker(int endIndex) {
+        if ( endIndex != -1 ) {
+            markerList.get(endIndex).setIcon(endMarkerIcon);
+            tmapView.removeMarkerItem(markerList.get(endIndex).getID());
+            tmapView.addMarkerItem(markerList.get(endIndex).getID(), markerList.get(endIndex));
+        }
+        this.endIndex = endIndex;
+    }
+
+    public int getEndIndex() {
+        return endIndex;
+    }
+
     // Parameter : 지울 마커의 인덱스 번호
     public void removeMarker(int markerIndex) {
         // 해당 번호의 마커를 맵과 배열 리스트에서 삭제.
@@ -99,6 +118,15 @@ public class MarkerController {
         for (int index = markerList.size() - 1; index > 0; index--) {
             removeMarker(index);
         }
+    }
+
+
+    public ArrayList<TMapMarkerItem> getPathMarkerList() {
+        return pathMarkerList;
+    }
+
+    public void setPathMarkerList(ArrayList<TMapMarkerItem> pathMarkerList) {
+        this.pathMarkerList = pathMarkerList;
     }
 
     public ArrayList<TMapMarkerItem> getMarkerList() {
