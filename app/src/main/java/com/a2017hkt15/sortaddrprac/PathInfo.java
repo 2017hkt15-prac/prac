@@ -8,6 +8,11 @@ public class PathInfo {
     int[] pathRoute;
     int pathLength;
 
+    public PathInfo()
+    {
+
+    }
+
     public PathInfo(int[] pr,int pl)
     {
         pathRoute = pr;
