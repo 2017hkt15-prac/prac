@@ -15,11 +15,11 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by YouMin on 2017-08-17.
  */
 
-public class PathActivity {
+public class PathBasic {
     private TMapData tmapdata;
     private double[][] distanceArr;
 
-    public PathActivity() {
+    public PathBasic() {
         tmapdata = new TMapData();
         distanceArr = new double[10][10];
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by YouMin on 2017-08-16.
  */
 
-public class MarkerActivity {
+public class MarkerController {
     // 최초 시작시 스타트 마커 여부
     private boolean isStartExist;
 
@@ -30,7 +30,7 @@ public class MarkerActivity {
     private Bitmap passMarkerIcon;
     private Bitmap endMarkerIcon;
 
-    public MarkerActivity (TMapView tmapView, Bitmap startMarkerIcon, Bitmap passMarkerIcon, Bitmap endMarkerIcon) {
+    public MarkerController (TMapView tmapView, Bitmap startMarkerIcon, Bitmap passMarkerIcon, Bitmap endMarkerIcon) {
         this.tmapView = tmapView;
         this.isStartExist = false;
         this.startMarkerIcon = startMarkerIcon;

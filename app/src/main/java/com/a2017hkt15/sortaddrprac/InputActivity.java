@@ -14,8 +14,8 @@ import com.skp.Tmap.TMapView;
  */
 
 public class InputActivity extends AppCompatActivity {
-    private MarkerActivity markerActivity;
-    private PathActivity pathActivity;
+    private MarkerController markerController;
+    private PathBasic pathBasic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +43,6 @@ public class InputActivity extends AppCompatActivity {
 
 
         // 마커, 경로 관련 클래스
-        markerActivity = new MarkerActivity(tmapview, startIcon, passIcon, endIcon);
-        // pathActivity = new PathActivity();
-
-        markerActivity.setStartMarker(37.570841f, 126.985302f, "test");
-        markerActivity.setStartMarker(37.470841f, 126.985302f, "test");
-        markerActivity.addMarker(37.680841f, 126.985302f, "testedf");
-        markerActivity.addMarker(37.370841f, 126.985302f, "testzxc");
-        markerActivity.addMarker(37.870841f, 126.985302f, "testvbb");
-        markerActivity.addMarker(37.170841f, 126.985302f, "testqwer");
+        markerController = new MarkerController(tmapview, startIcon, passIcon, endIcon);
     }
 }
