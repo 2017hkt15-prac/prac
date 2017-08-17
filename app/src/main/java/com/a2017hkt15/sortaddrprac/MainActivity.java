@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         goInputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), InputActivity.class);
+                Intent intent = new Intent(MainActivity.this, InputActivity.class);
                 startActivity(intent);
             }
         });

@@ -2,10 +2,14 @@ package com.a2017hkt15.sortaddrprac;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.skp.Tmap.TMapView;
 
@@ -14,6 +18,9 @@ import com.skp.Tmap.TMapView;
  */
 
 public class InputActivity extends AppCompatActivity {
+
+    private ListView listview ;
+    private ListViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +40,38 @@ public class InputActivity extends AppCompatActivity {
         tmapview.setSightVisible(true);
         tmapview.setTrafficInfo(true);
         layoutForMap.addView(tmapview);
-        setContentView(layoutForMap);
+//        setContentView(layoutForMap);
 
+
+        // Adapter 생성
+        adapter = new ListViewAdapter() ;
+
+        // 리스트뷰 참조 및 Adapter달기
+        listview = (ListView) findViewById(R.id.wayListView1);
+        listview.setAdapter(adapter);
+
+        // 첫 번째 아이템 추가.
+        //adapter.addItem("출발지", "", ContextCompat.getDrawable(getApplicationContext(), R.drawable.delete_640));
+        adapter.addItem("출발지");
+
+        addLine(); addLine(); addLine();
+
+        ImageButton addimageButton = (ImageButton)findViewById(R.id.addimageButton);
+        addimageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addLine();
+            }
+        });
+    }
+
+    private void addLine() {
+        if(Variable.numberOfLine < 10) {
+            adapter.addItem("목적지" + Variable.numberOfLine);
+            adapter.notifyDataSetChanged();
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"최대 갯수에 도달했습니다.",Toast.LENGTH_LONG).show();
+        }
     }
 }
