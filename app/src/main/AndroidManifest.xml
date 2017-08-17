@@ -3,6 +3,8 @@
     package="com.a2017hkt15.sortaddrprac">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,10 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".InputActivity">
-        </activity>
-
+        <activity android:name=".InputActivity"></activity>
+        <activity android:name=".AutoComplete"></activity>
     </application>
 
 </manifest>
