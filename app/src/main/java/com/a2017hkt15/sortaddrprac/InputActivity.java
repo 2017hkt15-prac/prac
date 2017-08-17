@@ -1,6 +1,8 @@
 package com.a2017hkt15.sortaddrprac;
 
-import android.content.Intent;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,8 @@ import com.skp.Tmap.TMapView;
  */
 
 public class InputActivity extends AppCompatActivity {
+    private MarkerController markerController;
+    private PathBasic pathBasic;
 
     private ListView listview ;
     private ListViewAdapter adapter;
@@ -29,11 +33,10 @@ public class InputActivity extends AppCompatActivity {
 
         LinearLayout layoutForMap = (LinearLayout)findViewById(R.id.layout_for_map);
         TMapView tmapview = new TMapView(this);
-
         tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true);
-        tmapview.setZoomLevel(15);
+        tmapview.setZoomLevel(8);
         tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setTrackingMode(true);
@@ -63,15 +66,25 @@ public class InputActivity extends AppCompatActivity {
                 addLine();
             }
         });
+
+        // 현재 위치 마커 아이콘 리소스 불러온 후 적용
+        Context context = getApplicationContext();
+        Bitmap startIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.start);
+        Bitmap passIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.pass);
+        Bitmap endIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.end);
+
+
+        // 마커, 경로 관련 클래스
+        markerController = new MarkerController(tmapview, startIcon, passIcon, endIcon);
+
     }
 
     private void addLine() {
-        if(Variable.numberOfLine < 10) {
+        if (Variable.numberOfLine < 10) {
             adapter.addItem("목적지" + Variable.numberOfLine);
             adapter.notifyDataSetChanged();
-        }
-        else {
-            Toast.makeText(getApplicationContext(),"최대 갯수에 도달했습니다.",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "최대 갯수에 도달했습니다.", Toast.LENGTH_LONG).show();
         }
     }
 }
