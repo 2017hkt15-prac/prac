@@ -23,12 +23,13 @@ import java.util.ArrayList;
 
 public class ListViewAdapter extends BaseAdapter {
 
+    private InputActivity ia;
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<ListViewWay> listViewWayList = new ArrayList<>() ;
 
     // ListViewAdapter의 생성자
-    public ListViewAdapter() {
-
+    public ListViewAdapter(InputActivity ia) {
+        this.ia=ia;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
@@ -42,6 +43,7 @@ public class ListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
+
 
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
