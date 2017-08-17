@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 
 public class PathInfo {
-    ArrayList<Integer> pathRoute;
-    int pathLength;
+    private ArrayList<Integer> pathRoute;
+    private int pathLength;
 
     public PathInfo()
     {
@@ -19,5 +19,22 @@ public class PathInfo {
     {
         pathRoute = pr;
         pathLength =pl;
+    }
+
+
+    public ArrayList<Integer> getPathRoute() {
+        return pathRoute;
+    }
+
+    public void setPathRoute(ArrayList<Integer> pathRoute) {
+        this.pathRoute = pathRoute;
+    }
+
+    public int getPathLength() {
+        return pathLength;
+    }
+
+    public void setPathLength(int pathLength) {
+        this.pathLength = pathLength;
     }
 }
