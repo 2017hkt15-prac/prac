@@ -54,7 +54,6 @@ public class InputActivity extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // 첫 번째 아이템 추가.
-        //adapter.addItem("출발지", "", ContextCompat.getDrawable(getApplicationContext(), R.drawable.delete_640));
         adapter.addItem("출발지");
 
         addLine(); addLine(); addLine();
@@ -81,8 +80,7 @@ public class InputActivity extends AppCompatActivity {
 
     private void addLine() {
         if (Variable.numberOfLine < 10) {
-            adapter.addItem("목적지" + Variable.numberOfLine);
-            adapter.notifyDataSetChanged();
+            adapter.addItem("목적지");
         } else {
             Toast.makeText(getApplicationContext(), "최대 갯수에 도달했습니다.", Toast.LENGTH_LONG).show();
         }

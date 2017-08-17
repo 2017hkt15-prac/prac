@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,24 @@ public class ListViewAdapter extends BaseAdapter {
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewWay listViewWay = listViewWayList.get(position);
 
+        imageButtonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pos != 0) {
+                    listViewWayList.remove(pos);
+                    Variable.numberOfLine--;
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
+        wayEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: 입력하는 Activity로 이동
+            }
+        });
+
         // 아이템 내 각 위젯에 데이터 반영
         imageButtonDelete.setImageDrawable(listViewWay.getDeleteImage());
         titleTextView.setText(listViewWay.getTitleStr());
@@ -81,9 +100,7 @@ public class ListViewAdapter extends BaseAdapter {
 
         Variable.numberOfLine++;
         listViewWayList.add(item);
-    }
-    public void delitem(View v){
-        //편집중
-        listViewWayList.remove(v);
+
+        notifyDataSetChanged();
     }
 }
