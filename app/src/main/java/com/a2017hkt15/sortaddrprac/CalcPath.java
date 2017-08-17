@@ -18,6 +18,11 @@ public class CalcPath {
         map=new ArrayList<>();
     }
 
+    public CalcPath(int min, ArrayList<ArrayList<Integer>> map)
+    {
+       this();
+    }
+
     public PathInfo pathCalc()
     {
         PathInfo ret=new PathInfo();
