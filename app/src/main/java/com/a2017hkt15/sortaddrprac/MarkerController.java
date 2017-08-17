@@ -47,6 +47,7 @@ public class MarkerController {
 
     // 위도, 경도, 마커(장소) 이름
     public void addMarker(float latitude, float longitude, String placeName) {
+        //일반 마커
         // 포인트 지점 인스턴스 생성 후 마커 인스턴스 생성
         TMapPoint placePoint = new TMapPoint(latitude, longitude);
         TMapMarkerItem placeMarker = new TMapMarkerItem();
@@ -69,6 +70,7 @@ public class MarkerController {
     }
 
     public void setStartMarker(float latitude, float longitude, String placeName) {
+        //시작 마커
         // 시작 마커가 이미 있다면 제거하고 새롭게 생성
         if ( isStartExist ) removeMarker(0);
 
@@ -94,6 +96,7 @@ public class MarkerController {
     }
 
     public void setEndMarker(int endIndex) {
+        //도착지 마커
         if ( endIndex != -1 ) {
             markerList.get(endIndex).setIcon(endMarkerIcon);
             tmapView.removeMarkerItem(markerList.get(endIndex).getID());

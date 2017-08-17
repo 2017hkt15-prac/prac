@@ -74,6 +74,9 @@ public class AutoComplete extends AppCompatActivity {
 
     public void onPass(View v) {
         Log.i("onPass", address_send);
+        Intent get_intent = getIntent();
+        Intent intent = new Intent(AutoComplete.this,InputActivity.class);
+       // intent.putExtra(get_intent.getExtras("position"));
        /* Intent intent = new Intent(AutoComplete.this, InputActivity.class);
         intent.putExtra("address_name", address_send);
         setResult(RESULT_OK, intent);
