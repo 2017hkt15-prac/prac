@@ -25,22 +25,13 @@ public class PathActivity {
     }
 
     // 리스트에 있는 마커끼리의 거리를 계산해 거리 배열에 저장
-    public void calcDistance(ArrayList<TMapMarkerItem> markerList) {
+    public void calcDistance(ArrayList<TMapMarkerItem> markerList) throws ParserConfigurationException, SAXException, IOException {
         for (int start = 0; start < markerList.size(); start++)
             for (int end = 0; end < markerList.size(); end++) {
                 if (start == end)
                     distanceArr[start][end] = -1;
-                else {
-                    try {
-                        distanceArr[start][end] = tmapdata.findPathData(markerList.get(start).getTMapPoint(), markerList.get(end).getTMapPoint()).getDistance();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ParserConfigurationException e) {
-                        e.printStackTrace();
-                    } catch (SAXException e) {
-                        e.printStackTrace();
-                    }
-                }
+                else
+                    distanceArr[start][end] = tmapdata.findPathData(markerList.get(start).getTMapPoint(), markerList.get(end).getTMapPoint()).getDistance();
             }
     }
 

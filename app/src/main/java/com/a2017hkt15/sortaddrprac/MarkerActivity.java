@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 
 public class MarkerActivity {
+    // 최초 시작시 스타트 마커 여부
+    private boolean isStartExist;
+
     // 현재 체크된 마커 리스트들
     private ArrayList<TMapMarkerItem> markerList;
 
@@ -23,11 +26,16 @@ public class MarkerActivity {
 
     // 지도 포인터 및 마커 아이콘 설정
     private TMapView tmapView;
-    private Bitmap markerIcon;
+    private Bitmap startMarkerIcon;
+    private Bitmap passMarkerIcon;
+    private Bitmap endMarkerIcon;
 
-    public MarkerActivity (TMapView tmapView, Bitmap MarkerIcon) {
+    public MarkerActivity (TMapView tmapView, Bitmap startMarkerIcon, Bitmap passMarkerIcon, Bitmap endMarkerIcon) {
         this.tmapView = tmapView;
-        this.markerIcon = MarkerIcon;
+        this.isStartExist = false;
+        this.startMarkerIcon = startMarkerIcon;
+        this.passMarkerIcon = passMarkerIcon;
+        this.endMarkerIcon = endMarkerIcon;
         this.markerList = new ArrayList<TMapMarkerItem>();
     }
 
@@ -42,12 +50,41 @@ public class MarkerActivity {
         placeMarker.setID(placeName);
         placeMarker.setName(placeName);
         placeMarker.setVisible(TMapMarkerItem.VISIBLE);
-        placeMarker.setIcon(markerIcon);
+        placeMarker.setIcon(passMarkerIcon);
         placeMarker.setPosition(markerCenterDx, markerCenterDy);
+        placeMarker.setCanShowCallout(true);
+        placeMarker.setAutoCalloutVisible(true);
+        placeMarker.setCalloutTitle(placeName);
+        placeMarker.setCalloutLeftImage(passMarkerIcon);
 
-        // 배열 리스트에 마커 추가 및 지도에 마커 추가
-        markerList.add(placeMarker);
+        // 배열리스트 및 지도에 마커 추가
         tmapView.addMarkerItem(placeMarker.getID(), placeMarker);
+        markerList.add(placeMarker);
+    }
+
+    public void setStartMarker(float latitude, float longitude, String placeName) {
+        // 시작 마커가 이미 있다면 제거하고 새롭게 생성
+        if ( isStartExist ) removeMarker(0);
+
+        TMapPoint placePoint = new TMapPoint(latitude, longitude);
+        TMapMarkerItem placeMarker = new TMapMarkerItem();
+
+        // 마커 속성 설정
+        placeMarker.setTMapPoint(placePoint);
+        placeMarker.setID(placeName);
+        placeMarker.setName(placeName);
+        placeMarker.setVisible(TMapMarkerItem.VISIBLE);
+        placeMarker.setIcon(startMarkerIcon);
+        placeMarker.setPosition(markerCenterDx, markerCenterDy);
+        placeMarker.setCanShowCallout(true);
+        placeMarker.setAutoCalloutVisible(true);
+        placeMarker.setCalloutTitle(placeName);
+        placeMarker.setCalloutLeftImage(startMarkerIcon);
+
+        // 배열리스트 및 지도에 마커 추가
+        tmapView.addMarkerItem(placeMarker.getID(), placeMarker);
+        markerList.add(0, placeMarker);
+        isStartExist = true;
     }
 
     // Parameter : 지울 마커의 인덱스 번호
@@ -57,9 +94,11 @@ public class MarkerActivity {
         markerList.remove(markerIndex);
     }
 
+    // 시작 마커를 제외한 모든 마커 제거
     public void removeAllMarker() {
-        markerList.removeAll(markerList);
-        tmapView.removeAllMarkerItem();
+        for (int index = markerList.size() - 1; index > 0; index--) {
+            removeMarker(index);
+        }
     }
 
     public ArrayList<TMapMarkerItem> getMarkerList() {
