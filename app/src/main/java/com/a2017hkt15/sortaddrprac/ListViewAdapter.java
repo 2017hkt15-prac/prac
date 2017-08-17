@@ -22,14 +22,13 @@ import java.util.ArrayList;
  */
 
 public class ListViewAdapter extends BaseAdapter {
-
-    private InputActivity ia;
+    private InputActivity inputActivity;
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<ListViewWay> listViewWayList = new ArrayList<>() ;
 
     // ListViewAdapter의 생성자
-    public ListViewAdapter(InputActivity ia) {
-        this.ia=ia;
+    public ListViewAdapter(InputActivity inputActivity) {
+        this.inputActivity=inputActivity;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
@@ -75,9 +74,7 @@ public class ListViewAdapter extends BaseAdapter {
             public void onClick(View v) {
                 //TODO: 입력하는 Activity로 이동
                 Intent intent = new Intent(context,AutoComplete.class);
-                intent.putExtra("position",pos);
-
-                context.startActivity(intent);
+                inputActivity.startActivityForResult(intent,pos);   //pos
             }
         });
 
@@ -97,7 +94,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
-    public Object getItem(int position) {
+    public ListViewWay getItem(int position) {
         return listViewWayList.get(position);
     }
 
