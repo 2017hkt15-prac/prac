@@ -21,9 +21,8 @@ import java.util.ArrayList;
 public class AutoComplete extends AppCompatActivity {
     TMapData tMapdata = new TMapData();
     String address_send;
-    double lat;
-    double lon;
-
+    static double lat;
+    static double lon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +30,6 @@ public class AutoComplete extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.button);
 
         TMapView tmapview = new TMapView(this);
-        Log.i("check", "시작11");
         tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
     }
 
@@ -78,32 +76,31 @@ public class AutoComplete extends AppCompatActivity {
         Log.i("onPass", address_send);
         int position;
         Intent intent1 = getIntent();
+        //위 경도값도 같이 보내기
+        //받는 곳 inputActivity에서 배열로 저장 후 마커 찍기
+        AddressInfo info = new AddressInfo();
         position = intent1.getIntExtra("position",0);
         Intent intent = new Intent(AutoComplete.this,InputActivity.class);
-        //address_send 주소이름을 inputActivity로 보냄
+        runOnUiThread(new Runnable() {
+                          public void run() {
+                              TMapData tdata = new TMapData();
+                              tdata.findAllPOI(address_send, new TMapData.FindAllPOIListenerCallback() {
+                                  @Override
+                                  public void onFindAllPOI(ArrayList<TMapPOIItem> poiItem) {
+                                      String[] array;
+                                      TMapPOIItem item2 = poiItem.get(poiItem.size() - 1);
+                                      array = item2.getPOIPoint().toString().split(" ");
+                                      Log.i("lat333", array[1]);
+                                      lat = Double.parseDouble(array[1]);
+                                      lon = Double.parseDouble(array[3]);
+                                  }
+                              });
+                          }
+                      });
+
         intent.putExtra("address_name",address_send);
         intent.putExtra("position",position);
         setResult(RESULT_OK,intent);
         finish();
-
-       // intent.putExtra(get_intent.getExtras("position"));
-       /* Intent intent = new Intent(AutoComplete.this, InputActivity.class);
-        intent.putExtra("address_name", address_send);
-        setResult(RESULT_OK, intent);
-        finish();*/
-      /*  tMapdata.findAllPOI(address_send, new TMapData.FindAllPOIListenerCallback() {
-            @Override
-            public void onFindAllPOI(ArrayList<TMapPOIItem> poiItem) {
-                Log.i("클릭","클릭");
-                String[] array;
-                Log.i("size",String.valueOf(poiItem.size()));
-                TMapPOIItem item2 = poiItem.get(poiItem.size()-1);
-                array = item2.getPOIPoint().toString().split(" ");
-                Log.i("lat",array[1]);
-                Log.i("lon",array[3]);
-                lat = Double.parseDouble(array[1]);
-                lon = Double.parseDouble(array[3]);
-            }
-        });*/
     }
 }

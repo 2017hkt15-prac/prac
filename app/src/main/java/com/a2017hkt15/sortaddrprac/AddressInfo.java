@@ -1,27 +1,29 @@
 package com.a2017hkt15.sortaddrprac;
 
+import java.io.Serializable;
+
 /**
  * Created by 쿠키AND망고 on 2017-08-17.
  */
-
-public class AddressInfo {
-    private double lon;
-    private double lat;
+@SuppressWarnings("serial")
+public class AddressInfo implements Serializable{
+    private float lon;
+    private float lat;
     private String addr;
 
-    public double getLon() {
+    public float getLon() {
         return lon;
     }
 
-    public void setLon(double lon) {
+    public void setLon(float lon) {
         this.lon = lon;
     }
 
-    public double getLat() {
+    public float getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(float lat) {
         this.lat = lat;
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,15 +58,29 @@ public class ListViewAdapter extends BaseAdapter {
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewWay listViewWay = listViewWayList.get(position);
-
+        //초기값
+        inputActivity.setButton_pos(-1);
         imageButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pos != 0) {
                     listViewWayList.remove(pos);
+                    //button_pos을 넘겨줌
+                    inputActivity.setButton_pos(pos);
+                    //해당 arraylist의 값을 삭제
+                    inputActivity.getAddressInfo_array().remove(pos);
+                    //해당 장소의 마커 삭제
+                    inputActivity.getMarkerController().removeMarker(pos);
+
                     Variable.numberOfLine--;
                     notifyDataSetChanged();
                 }
+                else if(pos>inputActivity.getAddressInfo_array().size()){
+                    listViewWayList.remove(pos);
+                    Variable.numberOfLine--;
+                    notifyDataSetChanged();
+                }
+
             }
         });
 
