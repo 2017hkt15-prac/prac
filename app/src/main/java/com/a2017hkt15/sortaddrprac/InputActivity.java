@@ -56,7 +56,7 @@ public class InputActivity extends AppCompatActivity {
 
         LinearLayout layoutForMap = (LinearLayout) findViewById(R.id.layout_for_map);
         TMapView tmapview = new TMapView(this);
-        tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
+        tmapview.setSKPMapApiKey("1580079a-acc2-307f-b1bb-979bf55fc810");
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true);
         tmapview.setZoomLevel(8);
@@ -138,8 +138,6 @@ public class InputActivity extends AppCompatActivity {
         markerController.addMarker(37.536474f, 126.855022f, "test4");
 
         pathBasic.calcDistancePath(markerController.getMarkerList());
-
-
     }
 
     @Override

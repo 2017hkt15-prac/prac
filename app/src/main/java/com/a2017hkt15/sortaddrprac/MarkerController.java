@@ -70,7 +70,6 @@ public class MarkerController {
     }
 
     public void setStartMarker(float latitude, float longitude, String placeName) {
-        //시작 마커
         // 시작 마커가 이미 있다면 제거하고 새롭게 생성
         if ( isStartExist ) removeMarker(0);
 
@@ -116,11 +115,15 @@ public class MarkerController {
         markerList.remove(markerIndex);
     }
 
-    // 시작 마커를 제외한 모든 마커 제거
-    public void removeAllMarker() {
-        for (int index = markerList.size() - 1; index > 0; index--) {
+    // 모든 마커 제거 (true : 시작점 포함, false : 시작점 미포함)
+    public void removeAllMarker(boolean fromStart) {
+        int isStart;
+
+        if (fromStart) isStart = -1;
+        else isStart = 0;
+
+        for (int index = markerList.size() - 1; index > isStart; index--)
             removeMarker(index);
-        }
     }
 
 

@@ -1,21 +1,14 @@
 package com.a2017hkt15.sortaddrprac;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapMarkerItem;
+import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapPolyLine;
 import com.skp.Tmap.TMapView;
-
-
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Created by YouMin on 2017-08-17.
@@ -25,52 +18,48 @@ public class PathBasic {
     private TMapView tmapView;
     private TMapData tmapdata;
     private MarkerController markerController;
+    private DistanceCalcThread distanceCalcThread;
 
+    private TMapPoint[][][] pathPoint;
     private double[][] distanceArr;
     private int[] pathRoute;
 
-    private int start, end;
     private int pathID;
 
     public PathBasic(TMapView tmapView, MarkerController markerController) {
-        pathID = 0;
+        this.pathID = 0;
         this.tmapView = tmapView;
-        tmapdata = new TMapData();
-        distanceArr = new double[10][10];
+        this.tmapdata = new TMapData();
+        this.distanceArr = new double[10][10];
+        this.pathPoint = new TMapPoint[10][10][2];
         this.markerController = markerController;
     }
 
     // 리스트에 있는 마커끼리의 거리를 계산해 거리 배열에 저장
     public void calcDistancePath(ArrayList<TMapMarkerItem> markerList) {
-        for (start = 0; start < markerList.size(); start++)
-            for (end = 0; end < markerList.size(); end++) {
+        this.removePath();
+        this.distanceCalcThread = new DistanceCalcThread(tmapdata);
+
+        for (int start = 0; start < markerList.size(); start++) {
+            for (int end = 0; end < markerList.size(); end++) {
                 if (start == end)
                     distanceArr[start][end] = -1.0;
                 else {
-                    Log.v("sds", tmapdata.toString());
-                    try {
-                        TMapPolyLine x = tmapdata.findPathData(markerList.get(start).getTMapPoint(), markerList.get(end).getTMapPoint());
-                        distanceArr[start][end] = x.getDistance();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ParserConfigurationException e) {
-                        e.printStackTrace();
-                    } catch (SAXException e) {
-                        e.printStackTrace();
-                    }
-
-                    /*
-                    tmapdata.findPathData(markerList.get(start).getTMapPoint(), markerList.get(end).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
-                        @Override
-                        public void onFindPathData(final TMapPolyLine polyLine) {
-                            distanceArr[start][end] = polyLine.getDistance();
-                        }
-                    });*/
+                    pathPoint[start][end][0] = markerList.get(start).getTMapPoint();
+                    pathPoint[start][end][1] = markerList.get(end).getTMapPoint();
                 }
             }
-        for (double[] x : distanceArr)
-            for (double xx : x)
-                Log.d("aaa", xx + "");
+        }
+        distanceCalcThread.setPoint(pathPoint, markerList.size());
+        distanceCalcThread.start();
+        synchronized (distanceCalcThread) {
+            try {
+                distanceCalcThread.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        distanceArr = distanceCalcThread.getDistanceArr();
         CalcPath calcPath = new CalcPath(0, markerController.getMarkerList().size(), distanceArr, markerController.getEndIndex());
         this.showPath(calcPath.pathCalc());
     }
@@ -91,10 +80,13 @@ public class PathBasic {
                 @Override
                 public void onFindPathData(TMapPolyLine polyLine) {
                     polyLine.setLineColor(Color.BLUE);
+                    polyLine.setLineWidth(5);
                     tmapView.addTMapPolyLine(pathID + "Route", polyLine);
                     pathID++;
                 }
             });
+            if (cur + 1 == markerList.size() - 1 )
+                markerController.setEndMarker(pathRoute[cur+1]);
         }
     }
 
