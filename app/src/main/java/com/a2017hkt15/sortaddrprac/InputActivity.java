@@ -133,8 +133,14 @@ public class InputActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.i("position","position");
         //resultCode가 position
-        adapter.getItem(resultCode).setAddrStr(intent.getStringExtra("address_name"));
-        adapter.notifyDataSetChanged();
+        int position;
+            Log.i("position2","position");
+
+            adapter.getItem(intent.getIntExtra("position",0)).setAddrStr(intent.getStringExtra("address_name"));
+            position = intent.getIntExtra("position",0);
+            Log.i("position",String.valueOf(position));
+            adapter.notifyDataSetChanged();
     }
 }

@@ -42,14 +42,14 @@ public class AutoComplete extends AppCompatActivity {
         final EditText editText = (EditText) findViewById(R.id.edit);
         address = editText.getText().toString();
 
-        Log.i("check123", address);          //장소 입력
+        //address가 장소 이름 edittext로 부터 받아옴
+        //address를 키워드로 해당 리스트를 받아옴
         tMapdata.autoComplete(address, new TMapData.AutoCompleteListenerCallback() {
             @Override
             public void onAutoComplete(ArrayList<String> poiltem) {
                 for (int i = 0; i < poiltem.size(); i++) {
-                    Log.i("check", poiltem.get(i));
+                    //리스트값을 addresslist로 add
                     addressList.add(poiltem.get(i));
-                    Log.i("size 확인", String.valueOf(addressList.size()));
                 }
                 runOnUiThread(new Runnable() {
                     public void run() {
@@ -63,6 +63,7 @@ public class AutoComplete extends AppCompatActivity {
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                 Toast.makeText(AutoComplete.this, addressList.get(position), Toast.LENGTH_SHORT).show();
                                 editText.setText(addressList.get(position));
+                                //listview에서 클릭한 값으로 edittext값 변경
                                 address_send = editText.getText().toString();
                             }
                         });
@@ -75,9 +76,13 @@ public class AutoComplete extends AppCompatActivity {
     public void onPass(View v) {
         //address_send 검색해서 받아온 주소이름
         Log.i("onPass", address_send);
+        int position;
+        Intent intent1 = getIntent();
+        position = intent1.getIntExtra("position",0);
         Intent intent = new Intent(AutoComplete.this,InputActivity.class);
         //address_send 주소이름을 inputActivity로 보냄
         intent.putExtra("address_name",address_send);
+        intent.putExtra("position",position);
         setResult(RESULT_OK,intent);
         finish();
 
