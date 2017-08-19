@@ -58,10 +58,6 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         setContentView(R.layout.activity_input);
 
 
-
-
-
-
         //툴바 세팅
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_input);
         setSupportActionBar(toolbar);
@@ -169,11 +165,18 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(AddressInfo_array.size()>1) {    //출발지1개 목적지1개 일 때
+                if (AddressInfo_array.size() > 1) {    //출발지1개 목적지1개 일 때
                     progressDialog = ProgressDialog.show(InputActivity.this, "경로 탐색 중", "잠시만 기다려주세요");
-                    pathBasic.calcDistancePath(markerController.getMarkerList());
-                }
-                else if(AddressInfo_array.size()==0){   //출발지 입력을 안 했을때
+
+                    Handler mHandler = new Handler();
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            pathBasic.calcDistancePath(markerController.getMarkerList());
+                        }
+                    }, 1000);
+                } else if (AddressInfo_array.size() == 0) {   //출발지 입력을 안 했을때
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(InputActivity.this);
                     alertDialog.setTitle("알림")
                             .setMessage("출발지를 입력해주세요")
@@ -184,8 +187,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
                             });
                     AlertDialog dialog = alertDialog.create();
                     dialog.show();
-                }
-                else if(AddressInfo_array.size()==1){   //목적지 입력을 안했을때
+                } else if (AddressInfo_array.size() == 1) {   //목적지 입력을 안했을때
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(InputActivity.this);
                     alertDialog.setTitle("알림")
                             .setMessage("목적지를 입력해주세요")
@@ -278,8 +280,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
                         markerController.addMarker(AddressInfo_array.get(position).getLat(), AddressInfo_array.get(position).getLon(), AddressInfo_array.get(position).getAddr());
                 }
             }, 1000);
-        }
-        else if (resultCode == RESULT_CANCELED) {
+        } else if (resultCode == RESULT_CANCELED) {
 
         }
     }
