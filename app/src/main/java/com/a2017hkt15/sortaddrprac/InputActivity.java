@@ -143,6 +143,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         Bitmap passIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.pass);
         Bitmap endIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.end);
 
+
         // 마커, 경로 관련 클래스
         markerController = new MarkerController(tmapview, startIcon, passIcon, endIcon);
         pathBasic = new PathBasic(tmapview, markerController);
@@ -154,6 +155,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
             public void onClick(View v) {
                 if(AddressInfo_array.size()>1) {    //출발지1개 목적지1개 일 때
                     progressDialog = ProgressDialog.show(InputActivity.this, "경로 탐색 중", "잠시만 기다려주세요");
+                    pathBasic.calcDistancePath(markerController.getMarkerList());
                 }
                 else if(AddressInfo_array.size()==0){   //출발지 입력을 안 했을때
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(InputActivity.this);
@@ -181,10 +183,6 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
                 }
             }
         });
-
-        // 마커, 경로 관련 클래스
-        markerController = new MarkerController(tmapview, startIcon, passIcon, endIcon);
-        pathBasic = new PathBasic(tmapview, markerController);
 
 
         // 테스트용 좌표
