@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,8 +22,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.skp.Tmap.TMapGpsManager;
+import com.skp.Tmap.TMapData;
+import com.skp.Tmap.TMapPOIItem;
 import com.skp.Tmap.TMapView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -32,9 +36,14 @@ import java.util.ArrayList;
 public class InputActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
     private MarkerController markerController;
     private PathBasic pathBasic;
-
+    private int button_pos;
     private ListView listview;
     private ListViewAdapter adapter;
+    private AddressInfo addressInfo = new AddressInfo(); //AddressInfo class
+    private ArrayList<AddressInfo> AddressInfo_array = new ArrayList<>();
+    String address_lat_lon;
+    float lat;
+    float lon;
 
     private TMapGpsManager tmapgps = null;
     private TMapView tmapview = null;
@@ -55,7 +64,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setSubtitleTextColor(ContextCompat.getColor(InputActivity.this, R.color.colorSubtitle));
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -81,7 +90,6 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
 
         layoutForMap.addView(tmapview);
 //      setContentView(layoutForMap);
-
         // 지도를 큰 화면으로 보기 위한 레이아웃
         /*
         RelativeLayout relativeLayout = new RelativeLayout(this);
@@ -131,7 +139,11 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         Bitmap passIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.pass);
         Bitmap endIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.end);
 
+        // 마커, 경로 관련 클래스
+        markerController = new MarkerController(tmapview, startIcon, passIcon, endIcon);
+        pathBasic = new PathBasic(tmapview, markerController);
         Button findButton = (Button) findViewById(R.id.button_find);
+        //검색 버튼 클릭
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,12 +157,11 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
 
 
         // 테스트용 좌표
-        markerController.setStartMarker(37.566474f, 126.985022f, "start");
+      /*  markerController.setStartMarker(37.566474f, 126.985022f, "start");
         markerController.addMarker(37.566474f, 126.685022f, "test1");
         markerController.addMarker(37.566474f, 126.755022f, "test2");
         markerController.addMarker(37.136474f, 126.985022f, "test3");
-        markerController.addMarker(37.536474f, 126.855022f, "test4");
-
+        markerController.addMarker(37.536474f, 126.855022f, "test4");*/
         pathBasic.calcDistancePath(markerController.getMarkerList());
 
 
@@ -163,7 +174,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
 
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_bt1:
                 //TODO::최종 목적지 설정
                 break;
@@ -184,18 +195,73 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         }
     }
 
+    //AutoComplete으로부터 데이터를 받음
+    //position, address_name
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if(requestCode == RESULT_OK) {
-            int position;
-            Log.i("position2", "position");
-
-            adapter.getItem(intent.getIntExtra("position", 0)).setAddrStr(intent.getStringExtra("address_name"));
-            position = intent.getIntExtra("position", 0);
-            Log.i("position", String.valueOf(position));
+        if (resultCode == RESULT_OK) {
+            final int position = intent.getIntExtra("position", 0);
+            final String address_name = intent.getStringExtra("address_name");
+            addressInfo.setAddr(address_name);
+            adapter.getItem(position).setAddrStr(address_name);
+            //edittext에 setText
             adapter.notifyDataSetChanged();
+            //변경완료
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    TMapData tdata = new TMapData();
+                    tdata.findAllPOI(address_name, new TMapData.FindAllPOIListenerCallback() {
+                        @Override
+                        public void onFindAllPOI(ArrayList<TMapPOIItem> poiItem) {
+                            String[] array;
+                            TMapPOIItem item2 = poiItem.get(poiItem.size() - 1);
+                            array = item2.getPOIPoint().toString().split(" ");
+                            lat = Float.parseFloat(array[1]);
+                            addressInfo.setLat(Float.parseFloat(array[1]));
+                            lon = Float.parseFloat(array[3]);
+                            addressInfo.setLon(lon);
+                        }
+                    });
+                }
+            });
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    address_lat_lon = address_name + "," + String.valueOf(addressInfo.getLat()) + "," + String.valueOf(addressInfo.getLon());
+                    AddressInfo_array.add(position, addressInfo);
+                    if (position == 0) {
+                        markerController.setStartMarker(AddressInfo_array.get(position).getLat(), AddressInfo_array.get(position).getLon(), AddressInfo_array.get(0).getAddr());
+                    } else
+                        markerController.addMarker(AddressInfo_array.get(position).getLat(), AddressInfo_array.get(position).getLon(), AddressInfo_array.get(position).getAddr());
+                }
+            }, 1000);
         }
-        else if(requestCode == RESULT_CANCELED) {
+        else if (resultCode == RESULT_CANCELED) {
 
         }
+    }
+
+    public int getButton_pos() {
+        return button_pos;
+    }
+
+    public void setButton_pos(int button_pos) {
+        this.button_pos = button_pos;
+    }
+
+    public ArrayList<AddressInfo> getAddressInfo_array() {
+        return AddressInfo_array;
+    }
+
+    public void setAddressInfo_array(ArrayList<AddressInfo> addressInfo_array) {
+        AddressInfo_array = addressInfo_array;
+    }
+
+    public MarkerController getMarkerController() {
+        return markerController;
+    }
+
+    public void setMarkerController(MarkerController markerController) {
+        this.markerController = markerController;
     }
 }

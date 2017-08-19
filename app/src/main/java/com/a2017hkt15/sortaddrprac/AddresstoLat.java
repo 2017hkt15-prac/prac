@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class AddresstoLat {
     TMapData tMapdata = new TMapData();
-    double lat;
-    double lon;
+    float lat;
+    float lon;
     public AddressInfo addressToLat(View v, String address_send) {
 
         AddressInfo addressInfo = new AddressInfo();
@@ -26,8 +26,8 @@ public class AddresstoLat {
                 array = item2.getPOIPoint().toString().split(" ");
                 Log.i("lat", array[1]);
                 Log.i("lon", array[3]);
-                lat = Double.parseDouble(array[1]);
-                lon = Double.parseDouble(array[3]);
+                lat = Float.parseFloat(array[1]);
+                lon =  Float.parseFloat(array[3]);
             }
         });
         addressInfo.setAddr(address_send);
