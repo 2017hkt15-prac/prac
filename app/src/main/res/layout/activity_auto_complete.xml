@@ -39,13 +39,6 @@
                 android:onClick="onClick"
                 android:text="검색" />
 
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:onClick="onPass"
-                android:text="입력" />
         </LinearLayout>
 
         <ListView
