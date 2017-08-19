@@ -73,9 +73,9 @@ public class PathBasic {
             Log.d("qqq", Integer.toString(xx));
 
         ArrayList<TMapMarkerItem> markerList = markerController.getMarkerList();
-        // markerController.getPathMarkerList().add(markerList.get(pathRoute[0]));
         for(int cur = 0; cur < markerList.size() - 1; cur++) {
-            // markerController.getPathMarkerList().add(markerList.get(pathRoute[cur]));
+            markerController.setMarkerNumber(pathRoute[cur], cur);
+            markerController.setMarkerNumber(pathRoute[cur+1], cur+1);
             tmapdata.findPathData(markerList.get(pathRoute[cur]).getTMapPoint(), markerList.get(pathRoute[cur+1]).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
                 @Override
                 public void onFindPathData(TMapPolyLine polyLine) {
@@ -85,8 +85,6 @@ public class PathBasic {
                     pathID++;
                 }
             });
-            if (cur + 1 == markerList.size() - 1 )
-                markerController.setEndMarker(pathRoute[cur+1]);
         }
     }
 

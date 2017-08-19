@@ -17,7 +17,7 @@ public class MarkerController {
     // 최초 시작시 스타트 마커 여부
     private boolean isStartExist;
     private boolean isEndExist;
-    private int endIndex;
+    private int endIndex = -1;
 
     // 현재 체크된 마커 리스트들
     private ArrayList<TMapMarkerItem> markerList;
@@ -33,15 +33,15 @@ public class MarkerController {
     private TMapView tmapView;
     private Bitmap startMarkerIcon;
     private Bitmap passMarkerIcon;
-    private Bitmap endMarkerIcon;
+    private Bitmap[] numberMarkerIcon;
 
-    public MarkerController (TMapView tmapView, Bitmap startMarkerIcon, Bitmap passMarkerIcon, Bitmap endMarkerIcon) {
+    public MarkerController (TMapView tmapView, Bitmap startMarkerIcon, Bitmap passMarkerIcon, Bitmap[] markerNumberIcon) {
         this.tmapView = tmapView;
         this.isStartExist = false;
         this.isEndExist = false;
         this.startMarkerIcon = startMarkerIcon;
         this.passMarkerIcon = passMarkerIcon;
-        this.endMarkerIcon = endMarkerIcon;
+        this.numberMarkerIcon = markerNumberIcon;
         this.markerList = new ArrayList<TMapMarkerItem>();
     }
 
@@ -94,14 +94,11 @@ public class MarkerController {
         isStartExist = true;
     }
 
-    public void setEndMarker(int endIndex) {
-        //도착지 마커
-        if ( endIndex != -1 ) {
-            markerList.get(endIndex).setIcon(endMarkerIcon);
-            tmapView.removeMarkerItem(markerList.get(endIndex).getID());
-            tmapView.addMarkerItem(markerList.get(endIndex).getID(), markerList.get(endIndex));
-        }
-        this.endIndex = endIndex;
+    public void setMarkerNumber(int index, int number) {
+        // 경유지 마커
+        markerList.get(index).setIcon(numberMarkerIcon[number]);
+        tmapView.removeMarkerItem(markerList.get(index).getID());
+        tmapView.addMarkerItem(markerList.get(index).getID(), markerList.get(index));
     }
 
     public int getEndIndex() {
