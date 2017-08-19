@@ -73,7 +73,7 @@ public class ListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //TODO: 입력하는 Activity로 이동
-                Intent intent = new Intent(context,AutoComplete.class);
+                Intent intent = new Intent(context,AutoCompleteActivity.class);
                 inputActivity.startActivityForResult(intent,pos);   //pos
             }
         });

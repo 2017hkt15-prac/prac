@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +38,21 @@ public class InputActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
+
+        //툴바 세팅
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_input);
+        setSupportActionBar(toolbar);
+
+        toolbar.setTitle(R.string.app_name);
+        String subtitle = "목적지 입력: 10개까지 입력 가능";
+        toolbar.setSubtitle(subtitle);
+
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(ContextCompat.getColor(InputActivity.this, R.color.colorSubtitle));
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         LinearLayout layoutForMap = (LinearLayout) findViewById(R.id.layout_for_map);
         TMapView tmapview = new TMapView(this);
@@ -122,6 +140,20 @@ public class InputActivity extends AppCompatActivity {
         pathBasic.calcDistancePath(markerController.getMarkerList());
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_bt1:
+                //TODO::최종 목적지 설정
+                break;
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void addLine() {
