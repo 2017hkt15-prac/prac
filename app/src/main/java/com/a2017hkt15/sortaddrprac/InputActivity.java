@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -23,6 +24,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapPOIItem;
 import com.skp.Tmap.TMapView;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
  * Created by gwmail on 2017-08-15.
  */
 
-public class InputActivity extends AppCompatActivity {
+public class InputActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
     private MarkerController markerController;
     private PathBasic pathBasic;
     private int button_pos;
@@ -46,6 +48,10 @@ public class InputActivity extends AppCompatActivity {
     float lat;
     float lon;
     static ProgressDialog progressDialog;
+
+    private TMapGpsManager tmapgps = null;
+    private TMapView tmapview = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,16 +73,25 @@ public class InputActivity extends AppCompatActivity {
         }
 
         LinearLayout layoutForMap = (LinearLayout) findViewById(R.id.layout_for_map);
-        TMapView tmapview = new TMapView(this);
+        tmapview = new TMapView(this);
         tmapview.setSKPMapApiKey(Variable.mapApiKey);
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true);
         tmapview.setZoomLevel(8);
         tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
+
+        tmapgps = new TMapGpsManager(InputActivity.this);
+        tmapgps.setMinTime(1000);
+        tmapgps.setMinDistance(5);
+        tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
+//        tmapgps.setProvider(tmapgps.GPS_PROVIDER);
+        tmapgps.OpenGps();
+
         tmapview.setTrackingMode(true);
         tmapview.setSightVisible(true);
         tmapview.setTrafficInfo(true);
+
         layoutForMap.addView(tmapview);
 //      setContentView(layoutForMap);
         // 지도를 큰 화면으로 보기 위한 레이아웃
@@ -184,12 +199,18 @@ public class InputActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onLocationChange(Location location) {
+        tmapview.setLocationPoint(location.getLongitude(), location.getLatitude());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_bt1:
                 //TODO::최종 목적지 설정
                 break;
             case android.R.id.home:
+                Variable.numberOfLine = 0;
                 finish();
                 break;
         }
