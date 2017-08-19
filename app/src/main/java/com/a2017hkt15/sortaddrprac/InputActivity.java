@@ -1,14 +1,15 @@
 package com.a2017hkt15.sortaddrprac;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,7 +28,7 @@ public class InputActivity extends AppCompatActivity {
     private MarkerController markerController;
     private PathBasic pathBasic;
 
-    private ListView listview ;
+    private ListView listview;
     private ListViewAdapter adapter;
 
     @Override
@@ -35,7 +36,7 @@ public class InputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
 
-        LinearLayout layoutForMap = (LinearLayout)findViewById(R.id.layout_for_map);
+        LinearLayout layoutForMap = (LinearLayout) findViewById(R.id.layout_for_map);
         TMapView tmapview = new TMapView(this);
         tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
         tmapview.setCompassMode(true);
@@ -64,23 +65,26 @@ public class InputActivity extends AppCompatActivity {
         setContentView(relativeLayout);
         */
 
-
-
-
-
         // Adapter 생성
-        adapter = new ListViewAdapter(this) ;
+        adapter = new ListViewAdapter(this);
 
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.wayListView1);
         listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+        });
         // 첫 번째 아이템 추가.
         adapter.addItem("출발지");
 
-        addLine(); addLine(); addLine();
+        addLine();
+        addLine();
+        addLine();
 
-        ImageButton addimageButton = (ImageButton)findViewById(R.id.addimageButton);
+        ImageButton addimageButton = (ImageButton) findViewById(R.id.addimageButton);
         addimageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +99,7 @@ public class InputActivity extends AppCompatActivity {
         Bitmap passIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.pass);
         Bitmap endIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.end);
 
-        Button findButton = (Button)findViewById(R.id.button_find);
+        Button findButton = (Button) findViewById(R.id.button_find);
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,10 +114,10 @@ public class InputActivity extends AppCompatActivity {
 
         // 테스트용 좌표
         markerController.setStartMarker(37.566474f, 126.985022f, "start");
-        markerController.addMarker(37.566474f, 126.685022f,  "test1");
-        markerController.addMarker(37.566474f, 126.755022f,  "test2");
-        markerController.addMarker(37.136474f,  126.985022f, "test3");
-        markerController.addMarker(37.536474f, 126.855022f,  "test4");
+        markerController.addMarker(37.566474f, 126.685022f, "test1");
+        markerController.addMarker(37.566474f, 126.755022f, "test2");
+        markerController.addMarker(37.136474f, 126.985022f, "test3");
+        markerController.addMarker(37.536474f, 126.855022f, "test4");
 
         pathBasic.calcDistancePath(markerController.getMarkerList());
 
@@ -126,5 +130,11 @@ public class InputActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "최대 갯수에 도달했습니다.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        //resultCode가 position
+        adapter.getItem(resultCode).setAddrStr(intent.getStringExtra("address_name"));
+        adapter.notifyDataSetChanged();
     }
 }

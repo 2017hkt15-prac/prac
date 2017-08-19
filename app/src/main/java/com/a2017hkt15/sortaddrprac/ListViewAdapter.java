@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +22,7 @@ import java.util.ArrayList;
  */
 
 public class ListViewAdapter extends BaseAdapter {
-
     private InputActivity inputActivity;
-
-    private EditText wayEditText;
-
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<ListViewWay> listViewWayList = new ArrayList<>() ;
 
@@ -56,7 +53,7 @@ public class ListViewAdapter extends BaseAdapter {
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         ImageButton imageButtonDelete = (ImageButton) convertView.findViewById(R.id.imageButtonDelete) ;
         TextView titleTextView = (TextView) convertView.findViewById(R.id.textViewTitle) ;
-        wayEditText = (EditText) convertView.findViewById(R.id.editTextWay) ;
+        EditText wayEditText = (EditText) convertView.findViewById(R.id.editTextWay) ;
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewWay listViewWay = listViewWayList.get(position);
@@ -76,6 +73,8 @@ public class ListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //TODO: 입력하는 Activity로 이동
+                Intent intent = new Intent(context,AutoComplete.class);
+                inputActivity.startActivityForResult(intent,pos);   //pos
             }
         });
 
@@ -95,7 +94,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
-    public Object getItem(int position) {
+    public ListViewWay getItem(int position) {
         return listViewWayList.get(position);
     }
 
@@ -108,13 +107,5 @@ public class ListViewAdapter extends BaseAdapter {
         listViewWayList.add(item);
 
         notifyDataSetChanged();
-    }
-
-    public EditText getWayEditText() {
-        return wayEditText;
-    }
-
-    public void setWayEditText(EditText wayEditText) {
-        this.wayEditText = wayEditText;
     }
 }

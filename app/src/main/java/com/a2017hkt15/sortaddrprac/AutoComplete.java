@@ -73,7 +73,15 @@ public class AutoComplete extends AppCompatActivity {
     }
 
     public void onPass(View v) {
+        //address_send 검색해서 받아온 주소이름
         Log.i("onPass", address_send);
+        Intent intent = new Intent(AutoComplete.this,InputActivity.class);
+        //address_send 주소이름을 inputActivity로 보냄
+        intent.putExtra("address_name",address_send);
+        setResult(RESULT_OK,intent);
+        finish();
+
+       // intent.putExtra(get_intent.getExtras("position"));
        /* Intent intent = new Intent(AutoComplete.this, InputActivity.class);
         intent.putExtra("address_name", address_send);
         setResult(RESULT_OK, intent);

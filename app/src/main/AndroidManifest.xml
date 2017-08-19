@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".InputActivity"></activity>
-        <activity android:name=".AutoComplete"></activity>
+        <activity android:name=".AutoComplete"
+            android:windowSoftInputMode="adjustNothing">
+        </activity>
+
     </application>
 
 </manifest>
