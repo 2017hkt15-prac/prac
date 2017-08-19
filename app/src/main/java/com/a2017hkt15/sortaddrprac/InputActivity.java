@@ -1,6 +1,8 @@
 package com.a2017hkt15.sortaddrprac;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -130,10 +133,39 @@ public class InputActivity extends AppCompatActivity {
         pathBasic = new PathBasic(tmapview, markerController);
         Button findButton = (Button) findViewById(R.id.button_find);
         //검색 버튼 클릭
+        //경로 출력
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(AddressInfo_array.size()>1) {
+                    ProgressDialog progressDialog = ProgressDialog.show(InputActivity.this, "경로 탐색 중", "잠시만 기다려주세요");
+                }
+                else if(AddressInfo_array.size()==0){
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(InputActivity.this);
 
+
+                    alertDialog.setTitle("알림")
+                            .setMessage("출발지를 입력해주세요")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                }
+                else {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(InputActivity.this);
+                    alertDialog.setTitle("알림")
+                            .setMessage("목적지를 입력해주세요")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                }
             }
         });
 
