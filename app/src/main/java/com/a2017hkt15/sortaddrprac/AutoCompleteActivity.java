@@ -51,7 +51,7 @@ public class AutoCompleteActivity extends AppCompatActivity {
 
         TMapView tmapview = new TMapView(this);
         Log.i("check", "시작11");
-        tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
+        tmapview.setSKPMapApiKey(Variable.mapApiKey);
     }
 
     @Override

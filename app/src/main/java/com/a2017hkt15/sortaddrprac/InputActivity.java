@@ -56,7 +56,7 @@ public class InputActivity extends AppCompatActivity {
 
         LinearLayout layoutForMap = (LinearLayout) findViewById(R.id.layout_for_map);
         TMapView tmapview = new TMapView(this);
-        tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
+        tmapview.setSKPMapApiKey(Variable.mapApiKey);
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true);
         tmapview.setZoomLevel(8);
@@ -72,7 +72,7 @@ public class InputActivity extends AppCompatActivity {
         /*
         RelativeLayout relativeLayout = new RelativeLayout(this);
         TMapView tmapview = new TMapView(this);
-        tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
+        tmapview.setSKPMapApiKey(Variable.mapApiKey);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setIconVisibility(true);
         tmapview.setZoomLevel(10);

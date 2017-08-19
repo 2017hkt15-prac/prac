@@ -48,24 +48,13 @@ public class PathBasic {
                     distanceArr[start][end] = -1.0;
                 else {
                     Log.v("sds", tmapdata.toString());
-                    try {
-                        TMapPolyLine x = tmapdata.findPathData(markerList.get(start).getTMapPoint(), markerList.get(end).getTMapPoint());
-                        distanceArr[start][end] = x.getDistance();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ParserConfigurationException e) {
-                        e.printStackTrace();
-                    } catch (SAXException e) {
-                        e.printStackTrace();
-                    }
 
-                    /*
                     tmapdata.findPathData(markerList.get(start).getTMapPoint(), markerList.get(end).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
                         @Override
-                        public void onFindPathData(final TMapPolyLine polyLine) {
+                        public void onFindPathData(TMapPolyLine polyLine) {
                             distanceArr[start][end] = polyLine.getDistance();
                         }
-                    });*/
+                    });
                 }
             }
         for (double[] x : distanceArr)
