@@ -57,6 +57,11 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
 
+
+
+
+
+
         //툴바 세팅
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_input);
         setSupportActionBar(toolbar);
@@ -94,6 +99,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
 
         layoutForMap.addView(tmapview);
 //      setContentView(layoutForMap);
+
         // 지도를 큰 화면으로 보기 위한 레이아웃
         /*
         RelativeLayout relativeLayout = new RelativeLayout(this);
@@ -136,18 +142,28 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
             }
         });
 
-
         // 현재 위치 마커 아이콘 리소스 불러온 후 적용
         Context context = getApplicationContext();
         Bitmap startIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.start);
         Bitmap passIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.pass);
-        Bitmap endIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.end);
+
+        Bitmap[] numberIcon = new Bitmap[10];
+        numberIcon[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark1);
+        numberIcon[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark2);
+        numberIcon[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark3);
+        numberIcon[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark4);
+        numberIcon[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark5);
+        numberIcon[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark6);
+        numberIcon[7] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark7);
+        numberIcon[8] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark8);
+        numberIcon[9] = BitmapFactory.decodeResource(context.getResources(), R.drawable.mark9);
 
 
         // 마커, 경로 관련 클래스
-        markerController = new MarkerController(tmapview, startIcon, passIcon, endIcon);
+        markerController = new MarkerController(tmapview, startIcon, passIcon, numberIcon);
         pathBasic = new PathBasic(tmapview, markerController);
         Button findButton = (Button) findViewById(R.id.button_find);
+
         //검색 버튼 클릭
         //경로 출력
         findButton.setOnClickListener(new View.OnClickListener() {
@@ -192,8 +208,6 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         markerController.addMarker(37.136474f, 126.985022f, "test3");
         markerController.addMarker(37.536474f, 126.855022f, "test4");*/
         pathBasic.calcDistancePath(markerController.getMarkerList());
-
-
     }
 
     @Override
