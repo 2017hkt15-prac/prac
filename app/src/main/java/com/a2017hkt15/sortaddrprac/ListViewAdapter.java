@@ -75,7 +75,7 @@ public class ListViewAdapter extends BaseAdapter {
                     Variable.numberOfLine--;
                     notifyDataSetChanged();
                 }
-                else if(pos>inputActivity.getAddressInfo_array().size()){
+                if(pos>inputActivity.getAddressInfo_array().size()){
                     listViewWayList.remove(pos);
                     Variable.numberOfLine--;
                     notifyDataSetChanged();
@@ -88,7 +88,7 @@ public class ListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //TODO: 입력하는 Activity로 이동
-                Intent intent = new Intent(context,AutoComplete.class);
+                Intent intent = new Intent(context,AutoCompleteActivity.class);
                 //position값 보냄
                 intent.putExtra("position",pos);
                 inputActivity.startActivityForResult(intent,1);   //pos

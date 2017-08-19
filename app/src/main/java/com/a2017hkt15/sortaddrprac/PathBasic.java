@@ -1,5 +1,6 @@
 package com.a2017hkt15.sortaddrprac;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -7,6 +8,7 @@ import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapMarkerItem;
 import com.skp.Tmap.TMapPolyLine;
 import com.skp.Tmap.TMapView;
+
 
 import org.xml.sax.SAXException;
 
@@ -45,7 +47,8 @@ public class PathBasic {
                 if (start == end)
                     distanceArr[start][end] = -1.0;
                 else {
-                    Log.v("sds",tmapdata.toString());
+                    Log.v("sds", tmapdata.toString());
+
                     tmapdata.findPathData(markerList.get(start).getTMapPoint(), markerList.get(end).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
                         @Override
                         public void onFindPathData(TMapPolyLine polyLine) {
@@ -54,6 +57,9 @@ public class PathBasic {
                     });
                 }
             }
+        for (double[] x : distanceArr)
+            for (double xx : x)
+                Log.d("aaa", xx + "");
         CalcPath calcPath = new CalcPath(0, markerController.getMarkerList().size(), distanceArr, markerController.getEndIndex());
         this.showPath(calcPath.pathCalc());
     }
@@ -62,15 +68,15 @@ public class PathBasic {
     public void showPath(PathInfo pathInfo) {
         this.setPathRoute(pathInfo.getPathRoute());
 
-        Log.d("xxx", pathInfo.getPathLength() + "");
+        Log.d("sss", pathInfo.getPathLength() + "/" + pathInfo.getPathRoute().length);
         for (int xx : pathInfo.getPathRoute())
-            Log.d("xxx", Integer.toString(xx));
+            Log.d("qqq", Integer.toString(xx));
 
         ArrayList<TMapMarkerItem> markerList = markerController.getMarkerList();
         // markerController.getPathMarkerList().add(markerList.get(pathRoute[0]));
-        for(int cur = 1; cur < markerList.size(); cur++) {
+        for(int cur = 0; cur < markerList.size() - 1; cur++) {
             // markerController.getPathMarkerList().add(markerList.get(pathRoute[cur]));
-            tmapdata.findPathData(markerList.get(pathRoute[cur-1]).getTMapPoint(), markerList.get(pathRoute[cur]).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
+            tmapdata.findPathData(markerList.get(pathRoute[cur]).getTMapPoint(), markerList.get(pathRoute[cur+1]).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
                 @Override
                 public void onFindPathData(TMapPolyLine polyLine) {
                     polyLine.setLineColor(Color.BLUE);

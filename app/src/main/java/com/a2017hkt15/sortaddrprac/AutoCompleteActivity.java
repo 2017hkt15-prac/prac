@@ -1,8 +1,11 @@
 package com.a2017hkt15.sortaddrprac;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +21,7 @@ import com.skp.Tmap.TMapView;
 
 import java.util.ArrayList;
 
-public class AutoComplete extends AppCompatActivity {
+public class AutoCompleteActivity extends AppCompatActivity {
     TMapData tMapdata = new TMapData();
     String address_send;
     static double lat;
@@ -27,10 +30,39 @@ public class AutoComplete extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_complete);
+
+        //툴바 세팅
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_auto_complete);
+        setSupportActionBar(toolbar);
+
+        toolbar.setTitle(R.string.app_name);
+        String subtitle = "목적지 입력: 검색 후 입력 클릭";
+        toolbar.setSubtitle(subtitle);
+
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(ContextCompat.getColor(AutoCompleteActivity.this, R.color.colorSubtitle));
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         Button button = (Button) findViewById(R.id.button);
 
         TMapView tmapview = new TMapView(this);
-        tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
+        tmapview.setSKPMapApiKey(Variable.mapApiKey);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(AutoCompleteActivity.this,InputActivity.class);
+                setResult(RESULT_CANCELED,intent);
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void onClick(View v) {
@@ -52,14 +84,14 @@ public class AutoComplete extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         ArrayAdapter<String> Adapter;
-                        Adapter = new ArrayAdapter<String>(AutoComplete.this, android.R.layout.simple_list_item_1, addressList);
+                        Adapter = new ArrayAdapter<String>(AutoCompleteActivity.this, android.R.layout.simple_list_item_1, addressList);
                         ListView list = (ListView) findViewById(R.id.list);
                         Adapter.notifyDataSetChanged();
                         list.setAdapter(Adapter);
                         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(AutoComplete.this, addressList.get(position), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AutoCompleteActivity.this, addressList.get(position), Toast.LENGTH_SHORT).show();
                                 editText.setText(addressList.get(position));
                                 //listview에서 클릭한 값으로 edittext값 변경
                                 address_send = editText.getText().toString();
@@ -80,7 +112,7 @@ public class AutoComplete extends AppCompatActivity {
         //받는 곳 inputActivity에서 배열로 저장 후 마커 찍기
         AddressInfo info = new AddressInfo();
         position = intent1.getIntExtra("position",0);
-        Intent intent = new Intent(AutoComplete.this,InputActivity.class);
+        Intent intent = new Intent(AutoCompleteActivity.this,InputActivity.class);
         runOnUiThread(new Runnable() {
                           public void run() {
                               TMapData tdata = new TMapData();
@@ -90,7 +122,6 @@ public class AutoComplete extends AppCompatActivity {
                                       String[] array;
                                       TMapPOIItem item2 = poiItem.get(poiItem.size() - 1);
                                       array = item2.getPOIPoint().toString().split(" ");
-                                      Log.i("lat333", array[1]);
                                       lat = Double.parseDouble(array[1]);
                                       lon = Double.parseDouble(array[3]);
                                   }

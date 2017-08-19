@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,13 +42,30 @@ public class InputActivity extends AppCompatActivity {
     String address_lat_lon;
     float lat;
     float lon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
+
+        //툴바 세팅
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_input);
+        setSupportActionBar(toolbar);
+
+        toolbar.setTitle(R.string.app_name);
+        String subtitle = "목적지 입력: 10개까지 입력 가능";
+        toolbar.setSubtitle(subtitle);
+
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(ContextCompat.getColor(InputActivity.this, R.color.colorSubtitle));
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         LinearLayout layoutForMap = (LinearLayout) findViewById(R.id.layout_for_map);
         TMapView tmapview = new TMapView(this);
-        tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
+        tmapview.setSKPMapApiKey(Variable.mapApiKey);
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true);
         tmapview.setZoomLevel(8);
@@ -60,7 +80,7 @@ public class InputActivity extends AppCompatActivity {
         /*
         RelativeLayout relativeLayout = new RelativeLayout(this);
         TMapView tmapview = new TMapView(this);
-        tmapview.setSKPMapApiKey("d78cbfb1-f9ee-3742-af96-bf845debb9ab");
+        tmapview.setSKPMapApiKey(Variable.mapApiKey);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setIconVisibility(true);
         tmapview.setZoomLevel(10);
@@ -116,6 +136,12 @@ public class InputActivity extends AppCompatActivity {
 
             }
         });
+
+        // 마커, 경로 관련 클래스
+        markerController = new MarkerController(tmapview, startIcon, passIcon, endIcon);
+        pathBasic = new PathBasic(tmapview, markerController);
+
+
         // 테스트용 좌표
       /*  markerController.setStartMarker(37.566474f, 126.985022f, "start");
         markerController.addMarker(37.566474f, 126.685022f, "test1");
@@ -125,6 +151,20 @@ public class InputActivity extends AppCompatActivity {
         pathBasic.calcDistancePath(markerController.getMarkerList());
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_bt1:
+                //TODO::최종 목적지 설정
+                break;
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void addLine() {
@@ -138,44 +178,47 @@ public class InputActivity extends AppCompatActivity {
     //AutoComplete으로부터 데이터를 받음
     //position, address_name
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-       final int position = intent.getIntExtra("position", 0);
-        final String address_name = intent.getStringExtra("address_name");
-        // String address_lat_lon;
-        addressInfo.setAddr(address_name);
-        adapter.getItem(position).setAddrStr(address_name);
-        //edittext에 setText
-        adapter.notifyDataSetChanged();
-        //변경완료
-        runOnUiThread(new Runnable() {
-            public void run() {
-                TMapData tdata = new TMapData();
-                tdata.findAllPOI(address_name, new TMapData.FindAllPOIListenerCallback() {
-                    @Override
-                    public void onFindAllPOI(ArrayList<TMapPOIItem> poiItem) {
-                        String[] array;
-                        TMapPOIItem item2 = poiItem.get(poiItem.size() - 1);
-                        array = item2.getPOIPoint().toString().split(" ");
-                        lat = Float.parseFloat(array[1]);
-                        addressInfo.setLat(Float.parseFloat(array[1]));
-                        lon = Float.parseFloat(array[3]);
-                        addressInfo.setLon(lon);
-                    }
-                });
-            }
-        });
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                address_lat_lon = address_name + "," + String.valueOf(addressInfo.getLat()) + "," + String.valueOf(addressInfo.getLon());
-                AddressInfo_array.add(position,addressInfo);
-                if(position==0){
-                    markerController.setStartMarker(AddressInfo_array.get(position).getLat(),AddressInfo_array.get(position).getLon(),AddressInfo_array.get(0).getAddr());
+        if (resultCode == RESULT_OK) {
+            final int position = intent.getIntExtra("position", 0);
+            final String address_name = intent.getStringExtra("address_name");
+            addressInfo.setAddr(address_name);
+            adapter.getItem(position).setAddrStr(address_name);
+            //edittext에 setText
+            adapter.notifyDataSetChanged();
+            //변경완료
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    TMapData tdata = new TMapData();
+                    tdata.findAllPOI(address_name, new TMapData.FindAllPOIListenerCallback() {
+                        @Override
+                        public void onFindAllPOI(ArrayList<TMapPOIItem> poiItem) {
+                            String[] array;
+                            TMapPOIItem item2 = poiItem.get(poiItem.size() - 1);
+                            array = item2.getPOIPoint().toString().split(" ");
+                            lat = Float.parseFloat(array[1]);
+                            addressInfo.setLat(Float.parseFloat(array[1]));
+                            lon = Float.parseFloat(array[3]);
+                            addressInfo.setLon(lon);
+                        }
+                    });
                 }
-                else
-                    markerController.addMarker(AddressInfo_array.get(position).getLat(),AddressInfo_array.get(position).getLon(),AddressInfo_array.get(position).getAddr());
-            }
-        }, 1000);
+            });
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    address_lat_lon = address_name + "," + String.valueOf(addressInfo.getLat()) + "," + String.valueOf(addressInfo.getLon());
+                    AddressInfo_array.add(position, addressInfo);
+                    if (position == 0) {
+                        markerController.setStartMarker(AddressInfo_array.get(position).getLat(), AddressInfo_array.get(position).getLon(), AddressInfo_array.get(0).getAddr());
+                    } else
+                        markerController.addMarker(AddressInfo_array.get(position).getLat(), AddressInfo_array.get(position).getLon(), AddressInfo_array.get(position).getAddr());
+                }
+            }, 1000);
+        }
+        else if (resultCode == RESULT_CANCELED) {
+
+        }
     }
 
     public int getButton_pos() {
