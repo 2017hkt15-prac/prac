@@ -165,14 +165,17 @@ public class InputActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Log.i("position","position");
-        //resultCode가 position
-        int position;
-            Log.i("position2","position");
+        if(requestCode == RESULT_OK) {
+            int position;
+            Log.i("position2", "position");
 
-            adapter.getItem(intent.getIntExtra("position",0)).setAddrStr(intent.getStringExtra("address_name"));
-            position = intent.getIntExtra("position",0);
-            Log.i("position",String.valueOf(position));
+            adapter.getItem(intent.getIntExtra("position", 0)).setAddrStr(intent.getStringExtra("address_name"));
+            position = intent.getIntExtra("position", 0);
+            Log.i("position", String.valueOf(position));
             adapter.notifyDataSetChanged();
+        }
+        else if(requestCode == RESULT_CANCELED) {
+
+        }
     }
 }

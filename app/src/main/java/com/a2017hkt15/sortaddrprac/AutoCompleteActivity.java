@@ -58,6 +58,8 @@ public class AutoCompleteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         switch(item.getItemId()) {
             case android.R.id.home:
+                Intent intent = new Intent(AutoCompleteActivity.this,InputActivity.class);
+                setResult(RESULT_CANCELED,intent);
                 finish();
                 break;
         }
@@ -111,7 +113,7 @@ public class AutoCompleteActivity extends AppCompatActivity {
         Intent intent = new Intent(AutoCompleteActivity.this,InputActivity.class);
         //address_send 주소이름을 inputActivity로 보냄
         intent.putExtra("address_name",address_send);
-        intent.putExtra("position",position);
+        intent.putExtra("pospition",position);
         setResult(RESULT_OK,intent);
         finish();
 
