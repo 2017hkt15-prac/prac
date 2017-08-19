@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int MY_PERMISSIONS_REQUEST_ACCESS_FIND_LOCATION = 1;
+    public static final int MY_PERMISSIONS_REQUEST_ACCESS_NETWORK_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Runtime Permission 관련
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(MainActivity.this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                MY_PERMISSIONS_REQUEST_ACCESS_FIND_LOCATION);
+                                new String[]{Manifest.permission.ACCESS_NETWORK_STATE},
+                                MY_PERMISSIONS_REQUEST_ACCESS_NETWORK_LOCATION);
                     }
                     else {
                         goToNextActivity();
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_FIND_LOCATION:
+            case MY_PERMISSIONS_REQUEST_ACCESS_NETWORK_LOCATION:
 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -62,12 +62,10 @@ public class MainActivity extends AppCompatActivity {
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-
+                                            goToNextActivity();
                                         }
                                     }).show();
-                    goToNextActivity();
                 }
-                return;
         }
     }
 
