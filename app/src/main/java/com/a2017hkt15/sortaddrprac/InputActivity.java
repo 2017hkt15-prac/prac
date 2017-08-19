@@ -45,7 +45,7 @@ public class InputActivity extends AppCompatActivity {
     String address_lat_lon;
     float lat;
     float lon;
-
+    static ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,13 +137,11 @@ public class InputActivity extends AppCompatActivity {
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(AddressInfo_array.size()>1) {
-                    ProgressDialog progressDialog = ProgressDialog.show(InputActivity.this, "경로 탐색 중", "잠시만 기다려주세요");
+                if(AddressInfo_array.size()>1) {    //출발지1개 목적지1개 일 때
+                    progressDialog = ProgressDialog.show(InputActivity.this, "경로 탐색 중", "잠시만 기다려주세요");
                 }
-                else if(AddressInfo_array.size()==0){
+                else if(AddressInfo_array.size()==0){   //출발지 입력을 안 했을때
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(InputActivity.this);
-
-
                     alertDialog.setTitle("알림")
                             .setMessage("출발지를 입력해주세요")
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -154,7 +152,7 @@ public class InputActivity extends AppCompatActivity {
                     AlertDialog dialog = alertDialog.create();
                     dialog.show();
                 }
-                else {
+                else if(AddressInfo_array.size()==1){   //목적지 입력을 안했을때
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(InputActivity.this);
                     alertDialog.setTitle("알림")
                             .setMessage("목적지를 입력해주세요")
