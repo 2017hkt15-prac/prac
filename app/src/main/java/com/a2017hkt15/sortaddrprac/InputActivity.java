@@ -47,7 +47,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
     String address_lat_lon;
     float lat;
     float lon;
-    static ProgressDialog progressDialog;
+    public static ProgressDialog progressDialog;
 
     private TMapGpsManager tmapgps = null;
     private TMapView tmapview = null;
@@ -207,7 +207,7 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
         markerController.addMarker(37.566474f, 126.755022f, "test2");
         markerController.addMarker(37.136474f, 126.985022f, "test3");
         markerController.addMarker(37.536474f, 126.855022f, "test4");*/
-        pathBasic.calcDistancePath(markerController.getMarkerList());
+        //pathBasic.calcDistancePath(markerController.getMarkerList());
     }
 
     @Override

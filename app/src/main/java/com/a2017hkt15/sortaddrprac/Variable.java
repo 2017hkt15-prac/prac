@@ -6,5 +6,5 @@ package com.a2017hkt15.sortaddrprac;
 
 public class Variable {
     public static int numberOfLine = 0;
-    public static String mapApiKey = "1580079a-acc2-307f-b1bb-979bf55fc810";
+    public static String mapApiKey = "24021907-d553-3d4f-b555-0155ca3ccadb";
 }

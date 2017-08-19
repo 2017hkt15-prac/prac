@@ -1,6 +1,7 @@
 package com.a2017hkt15.sortaddrprac;
 
 import android.graphics.Color;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 
 import com.skp.Tmap.TMapData;
@@ -74,8 +75,7 @@ public class PathBasic {
 
         ArrayList<TMapMarkerItem> markerList = markerController.getMarkerList();
         for(int cur = 0; cur < markerList.size() - 1; cur++) {
-            markerController.setMarkerNumber(pathRoute[cur], cur);
-            markerController.setMarkerNumber(pathRoute[cur+1], cur+1);
+            markerController.setMarkerNumber(pathRoute[cur + 1], cur + 1);
             tmapdata.findPathData(markerList.get(pathRoute[cur]).getTMapPoint(), markerList.get(pathRoute[cur+1]).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
                 @Override
                 public void onFindPathData(TMapPolyLine polyLine) {
@@ -83,6 +83,11 @@ public class PathBasic {
                     polyLine.setLineWidth(5);
                     tmapView.addTMapPolyLine(pathID + "Route", polyLine);
                     pathID++;
+
+                    if (InputActivity.progressDialog != null) {
+                        InputActivity.progressDialog.dismiss();
+                        InputActivity.progressDialog = null;
+                    }
                 }
             });
         }
