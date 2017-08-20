@@ -96,6 +96,7 @@ public class MarkerController {
 
     public void setMarkerNumber(int index, int number) {
         // 경유지 마커
+        if (number == 0) return;
         markerList.get(index).setIcon(numberMarkerIcon[number]);
         tmapView.removeMarkerItem(markerList.get(index).getID());
         tmapView.addMarkerItem(markerList.get(index).getID(), markerList.get(index));

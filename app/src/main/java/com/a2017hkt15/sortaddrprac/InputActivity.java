@@ -200,12 +200,14 @@ public class InputActivity extends AppCompatActivity implements TMapGpsManager.o
 
 
         // 테스트용 좌표
-      /*  markerController.setStartMarker(37.566474f, 126.985022f, "start");
+        /*
+        markerController.setStartMarker(37.566474f, 126.985022f, "start");
         markerController.addMarker(37.566474f, 126.685022f, "test1");
         markerController.addMarker(37.566474f, 126.755022f, "test2");
         markerController.addMarker(37.136474f, 126.985022f, "test3");
-        markerController.addMarker(37.536474f, 126.855022f, "test4");*/
+        markerController.addMarker(37.536474f, 126.855022f, "test4");
         pathBasic.calcDistancePath(markerController.getMarkerList());
+        */
     }
 
     @Override

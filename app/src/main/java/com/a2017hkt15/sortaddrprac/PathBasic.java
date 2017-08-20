@@ -74,8 +74,7 @@ public class PathBasic {
 
         ArrayList<TMapMarkerItem> markerList = markerController.getMarkerList();
         for(int cur = 0; cur < markerList.size() - 1; cur++) {
-            markerController.setMarkerNumber(pathRoute[cur], cur);
-            markerController.setMarkerNumber(pathRoute[cur+1], cur+1);
+            markerController.setMarkerNumber(pathRoute[cur + 1], cur + 1);
             tmapdata.findPathData(markerList.get(pathRoute[cur]).getTMapPoint(), markerList.get(pathRoute[cur+1]).getTMapPoint(), new TMapData.FindPathDataListenerCallback() {
                 @Override
                 public void onFindPathData(TMapPolyLine polyLine) {
