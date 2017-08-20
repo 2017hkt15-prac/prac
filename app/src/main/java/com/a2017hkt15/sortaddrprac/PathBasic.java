@@ -1,6 +1,7 @@
 package com.a2017hkt15.sortaddrprac;
 
 import android.graphics.Color;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 
 import com.skp.Tmap.TMapData;
@@ -82,6 +83,11 @@ public class PathBasic {
                     polyLine.setLineWidth(5);
                     tmapView.addTMapPolyLine(pathID + "Route", polyLine);
                     pathID++;
+
+                    if (InputActivity.progressDialog != null) {
+                        InputActivity.progressDialog.dismiss();
+                        InputActivity.progressDialog = null;
+                    }
                 }
             });
         }
